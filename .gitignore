@@ -1,0 +1,16 @@
+# don't need these
+
+.settings/
+
+# OS generated files
+
+.DS_Store*
+ehthumbs.db
+Icon?
+Thumbs.db
+
+# Mavensmate files
+
+.tm_properties
+*.sublime-project
+config/

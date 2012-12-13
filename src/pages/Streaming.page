@@ -1,0 +1,35 @@
+<apex:page showHeader="true" sidebar="true">
+
+     <apex:includeScript value="{!$Resource.cometd}"/>
+     <apex:includeScript value="{!$Resource.jquery}"/>
+
+     <apex:includeScript value="{!$Resource.jquery_cometd}"/>
+     <script type="text/javascript">
+     (function($){
+         $(document).ready(function() {
+             // Connect to the CometD endpoint
+             $.cometd.init({
+                url: window.location.protocol+'//'+window.location.hostname+'/cometd/23.0/',
+                requestHeaders: { Authorization: 'OAuth {!$Api.Session_ID}'}
+            });
+
+            // Subscribe to a topic. JSON-encoded update will be returned 
+            // in the callback
+            $.cometd.subscribe('/topic/AllAccounts', function(message) {
+                $('#content').append('<p>Notification: ' +
+                     'Channel: ' + JSON.stringify(message.channel) + '<br>' +
+                     'Record name: ' + JSON.stringify(message.data.sobject.Name) + '<br>' + 
+                     'ID: ' + JSON.stringify(message.data.sobject.Id) + '<br>' +
+                     'Event type: ' + JSON.stringify(message.data.event.type)+'<br>' +
+                    'Created: ' + JSON.stringify(message.data.event.createdDate) + '</p>');
+             });
+         });
+     })(jQuery)
+     </script>
+     <body>
+     <div id="content">
+     <p>Notifications should appear here...</p>
+     </div>
+     </body>
+	
+</apex:page>
